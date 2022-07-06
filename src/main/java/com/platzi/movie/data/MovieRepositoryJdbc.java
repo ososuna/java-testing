@@ -18,8 +18,8 @@ public class MovieRepositoryJdbc implements MovieRepository {
 
   @Override
   public Movie findById(long id) {
-    // TODO Auto-generated method stub
-    return null;
+    Object[] args = { id };
+    return jdbcTemplate.queryForObject("select * from movies where id = ?", args, rowMapper);
   }
 
   @Override
@@ -29,8 +29,8 @@ public class MovieRepositoryJdbc implements MovieRepository {
 
   @Override
   public void saveOrUpdate(Movie movie) {
-    // TODO Auto-generated method stub
-    
+    jdbcTemplate.update("insert into movies (name, minutes, genre) values (?, ?, ?)",
+      movie.getName(), movie.getMinutes(), movie.getGenre().name());
   }
 
   private static RowMapper<Movie> rowMapper = (rs, rowNum) -> new Movie(
